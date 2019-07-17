@@ -6,19 +6,15 @@ var React = require("react");
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
 var Restorative$Restorative = require("./Restorative.bs.js");
 
-function Index$Example(Props) {
-  return React.createElement("div", undefined, "Hello");
-}
-
-var Example = /* module */[/* make */Index$Example];
-
-ReactDOMRe.renderToElementWithId(React.createElement(Index$Example, { }), "root");
-
 function myReducer(state, action) {
   return /* record */[/* count */state[/* count */0] + 1 | 0];
 }
 
 var match = Restorative$Restorative.create(/* record */[/* count */1], myReducer);
+
+var useStoreWithSelector = match[/* useStoreWithSelector */5];
+
+var useStore = match[/* useStore */4];
 
 var dispatch = match[/* dispatch */3];
 
@@ -28,33 +24,50 @@ var subscribe = match[/* subscribe */1];
 
 var getState = match[/* getState */0];
 
-console.log(Curry._1(getState, /* () */0));
+function Index$Example(Props) {
+  React.useEffect((function () {
+          console.log(Curry._1(getState, /* () */0));
+          Curry._3(subscribe, (function (state) {
+                  console.log(state);
+                  return /* () */0;
+                }), undefined, /* () */0);
+          Curry._4(subscribeWithSelector, (function (count) {
+                  console.log(count);
+                  return /* () */0;
+                }), (function (state) {
+                  return state[/* count */0];
+                }), undefined, /* () */0);
+          Curry._4(subscribeWithSelector, (function (count) {
+                  console.log(count);
+                  return /* () */0;
+                }), (function (state) {
+                  return String(state[/* count */0] + 1 | 0);
+                }), undefined, /* () */0);
+          Curry._1(dispatch, /* Increment */0);
+          return undefined;
+        }), ([]));
+  var match = Curry._2(useStore, undefined, /* () */0);
+  var match$1 = Curry._3(useStoreWithSelector, (function (prim) {
+          return JSON.stringify(prim);
+        }), undefined, /* () */0);
+  var dispatch$1 = match$1[1];
+  return React.createElement("div", undefined, React.createElement("div", undefined, "Count: " + String(match[0][/* count */0])), React.createElement("div", undefined, "JSON: " + match$1[0]), React.createElement("div", undefined, React.createElement("button", {
+                      onClick: (function (param) {
+                          return Curry._1(dispatch$1, /* Increment */0);
+                        })
+                    }, "Increment")));
+}
 
-Curry._3(subscribe, (function (state) {
-        console.log(state);
-        return /* () */0;
-      }), undefined, /* () */0);
+var Example = /* module */[/* make */Index$Example];
 
-Curry._4(subscribeWithSelector, (function (count) {
-        console.log(count);
-        return /* () */0;
-      }), (function (state) {
-        return state[/* count */0];
-      }), undefined, /* () */0);
+ReactDOMRe.renderToElementWithId(React.createElement(Index$Example, { }), "root");
 
-Curry._4(subscribeWithSelector, (function (count) {
-        console.log(count);
-        return /* () */0;
-      }), (function (state) {
-        return String(state[/* count */0] + 1 | 0);
-      }), undefined, /* () */0);
-
-Curry._1(dispatch, /* Increment */0);
-
-exports.Example = Example;
 exports.myReducer = myReducer;
 exports.getState = getState;
 exports.subscribe = subscribe;
 exports.subscribeWithSelector = subscribeWithSelector;
 exports.dispatch = dispatch;
-/*  Not a pure module */
+exports.useStore = useStore;
+exports.useStoreWithSelector = useStoreWithSelector;
+exports.Example = Example;
+/* match Not a pure module */

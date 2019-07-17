@@ -16,6 +16,14 @@ type api('state, 'action) = {
     (. unit) => unit,
 
   dispatch: 'action => unit,
+  useStore:
+    (~equalityFn: ('state, 'state) => bool=?, unit) =>
+    ('state, 'action => unit),
+  useStoreWithSelector:
+    'slice.
+    ('state => 'slice, ~equalityFn: ('slice, 'slice) => bool=?, unit) =>
+    ('slice, 'action => unit),
+
 };
 
 [@bs.val] external objIs: ('a, 'b) => bool = "Object.is";
@@ -63,5 +71,37 @@ let create =
     };
   };
 
-  {getState, subscribe, subscribeWithSelector, dispatch};
+  let useStore = (~equalityFn=?, ()) => {
+    let (_, forceUpdate) = React.useState(() => 1);
+    React.useLayoutEffect0(() => {
+      let unsubscribe =
+        subscribe(_ => forceUpdate(x => x + 1), ~equalityFn?, ());
+      Some(() => unsubscribe(.));
+    });
+    (state^, dispatch);
+  };
+
+  let useStoreWithSelector = (selector, ~equalityFn=?, ()) => {
+    let (slice, setSlice) = React.useState(() => selector(state^));
+    React.useLayoutEffect0(() => {
+      let unsubscribe =
+        subscribeWithSelector(
+          slice => setSlice(_ => slice),
+          ~selector,
+          ~equalityFn?,
+          (),
+        );
+      Some(() => unsubscribe(.));
+    });
+    (slice, dispatch);
+  };
+
+  {
+    getState,
+    subscribe,
+    subscribeWithSelector,
+    dispatch,
+    useStore,
+    useStoreWithSelector,
+  };
 };

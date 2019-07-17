@@ -2,6 +2,7 @@
 'use strict';
 
 var Curry = require("bs-platform/lib/js/curry.js");
+var React = require("react");
 
 function create(initialState, reducer) {
   var state = /* record */[/* contents */initialState];
@@ -62,13 +63,55 @@ function create(initialState, reducer) {
         return /* () */0;
       });
   };
+  var useStore = function (equalityFn, param) {
+    var match = React.useState((function () {
+            return 1;
+          }));
+    var forceUpdate = match[1];
+    React.useLayoutEffect((function () {
+            var unsubscribe = subscribe((function (param) {
+                    return Curry._1(forceUpdate, (function (x) {
+                                  return x + 1 | 0;
+                                }));
+                  }), equalityFn, /* () */0);
+            return (function (param) {
+                      return unsubscribe();
+                    });
+          }), ([]));
+    return /* tuple */[
+            state[0],
+            dispatch
+          ];
+  };
+  var useStoreWithSelector = function (selector, equalityFn, param) {
+    var match = React.useState((function () {
+            return Curry._1(selector, state[0]);
+          }));
+    var setSlice = match[1];
+    React.useLayoutEffect((function () {
+            var unsubscribe = subscribeWithSelector((function (slice) {
+                    return Curry._1(setSlice, (function (param) {
+                                  return slice;
+                                }));
+                  }), selector, equalityFn, /* () */0);
+            return (function (param) {
+                      return unsubscribe();
+                    });
+          }), ([]));
+    return /* tuple */[
+            match[0],
+            dispatch
+          ];
+  };
   return /* record */[
           /* getState */getState,
           /* subscribe */subscribe,
           /* subscribeWithSelector */subscribeWithSelector,
-          /* dispatch */dispatch
+          /* dispatch */dispatch,
+          /* useStore */useStore,
+          /* useStoreWithSelector */useStoreWithSelector
         ];
 }
 
 exports.create = create;
-/* No side effect */
+/* react Not a pure module */
