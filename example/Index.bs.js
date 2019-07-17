@@ -4,7 +4,7 @@
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
-var Restorative$Restorative = require("./Restorative.bs.js");
+var Restorative$Restorative = require("../src/Restorative.bs.js");
 
 function myReducer(state, action) {
   return /* record */[/* count */state[/* count */0] + 1 | 0];
