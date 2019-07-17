@@ -4,7 +4,7 @@
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
-var Restorative$ReactHooksTemplate = require("./Restorative.bs.js");
+var Restorative$Restorative = require("./Restorative.bs.js");
 
 function Index$Example(Props) {
   return React.createElement("div", undefined, "Hello");
@@ -18,7 +18,7 @@ function myReducer(state, action) {
   return /* record */[/* count */state[/* count */0] + 1 | 0];
 }
 
-var match = Restorative$ReactHooksTemplate.create(/* record */[/* count */1], myReducer);
+var match = Restorative$Restorative.create(/* record */[/* count */1], myReducer);
 
 var dispatch = match[/* dispatch */3];
 
