@@ -1,3 +1,8 @@
-ReactDOMRe.renderToElementWithId(<Component1 message="Hello! Click this text." />, "index1");
+module Example = {
+  [@react.component]
+  let make = () => {
+    <div> {React.string("Hello")} </div>;
+  };
+};
 
-ReactDOMRe.renderToElementWithId(<Component2 greeting="Hello!" />, "index2");
+ReactDOMRe.renderToElementWithId(<Example />, "root");
