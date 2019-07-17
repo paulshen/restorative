@@ -28,7 +28,7 @@ type api('state, 'action) = {
 
 [@bs.val] external objIs: ('a, 'b) => bool = "Object.is";
 
-let create =
+let createStore =
     (initialState: 'state, reducer: reducer('state, 'action))
     : api('state, 'action) => {
   let state = ref(initialState);

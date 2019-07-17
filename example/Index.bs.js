@@ -6,11 +6,11 @@ var React = require("react");
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
 var Restorative$Restorative = require("../src/Restorative.bs.js");
 
-function myReducer(state, action) {
+function reducer(state, action) {
   return /* record */[/* count */state[/* count */0] + 1 | 0];
 }
 
-var match = Restorative$Restorative.create(/* record */[/* count */1], myReducer);
+var match = Restorative$Restorative.createStore(/* record */[/* count */1], reducer);
 
 var useStoreWithSelector = match[/* useStoreWithSelector */5];
 
@@ -62,7 +62,7 @@ var Example = /* module */[/* make */Index$Example];
 
 ReactDOMRe.renderToElementWithId(React.createElement(Index$Example, { }), "root");
 
-exports.myReducer = myReducer;
+exports.reducer = reducer;
 exports.getState = getState;
 exports.subscribe = subscribe;
 exports.subscribeWithSelector = subscribeWithSelector;

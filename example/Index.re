@@ -1,8 +1,10 @@
+open Restorative;
+
 type state = {count: int};
 type action =
   | Increment;
 
-let myReducer = (state, action) => {
+let reducer = (state, action) => {
   switch (action) {
   | Increment => {count: state.count + 1}
   };
@@ -14,9 +16,8 @@ let {
   dispatch,
   useStore,
   useStoreWithSelector,
-}:
-  Restorative.api(state, action) =
-  Restorative.create({count: 1}, myReducer);
+} =
+  createStore({count: 1}, reducer);
 
 [@bs.val] external jsonStringify: 'a => string = "JSON.stringify";
 

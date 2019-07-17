@@ -4,7 +4,7 @@
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 
-function create(initialState, reducer) {
+function createStore(initialState, reducer) {
   var state = /* record */[/* contents */initialState];
   var listeners = /* record */[/* contents : array */[]];
   var getState = function (param) {
@@ -113,5 +113,5 @@ function create(initialState, reducer) {
         ];
 }
 
-exports.create = create;
+exports.createStore = createStore;
 /* react Not a pure module */
