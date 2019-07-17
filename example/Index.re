@@ -22,6 +22,8 @@ let {
 [@bs.val] external jsonStringify: 'a => string = "JSON.stringify";
 
 module Example = {
+  type derivedState = {countDividedBy5: int};
+
   [@react.component]
   let make = () => {
     React.useEffect0(() => {
@@ -36,6 +38,13 @@ module Example = {
       subscribeWithSelector(
         count => Js.log(count),
         ~selector=state => string_of_int(state.count + 1),
+        (),
+      )
+      |> ignore;
+      subscribeWithSelector(
+        derivedState => Js.log2("Derived", derivedState),
+        ~selector=state => {countDividedBy5: state.count / 5},
+        ~equalityFn=(a, b) => a == b,
         (),
       )
       |> ignore;

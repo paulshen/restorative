@@ -3,6 +3,7 @@
 
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
+var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
 var Restorative$Restorative = require("../src/Restorative.bs.js");
 
@@ -43,6 +44,12 @@ function Index$Example(Props) {
                 }), (function (state) {
                   return String(state[/* count */0] + 1 | 0);
                 }), undefined, /* () */0);
+          Curry._4(subscribeWithSelector, (function (derivedState) {
+                  console.log("Derived", derivedState);
+                  return /* () */0;
+                }), (function (state) {
+                  return /* record */[/* countDividedBy5 */state[/* count */0] / 5 | 0];
+                }), Caml_obj.caml_equal, /* () */0);
           Curry._1(dispatch, /* Increment */0);
           return undefined;
         }), ([]));
