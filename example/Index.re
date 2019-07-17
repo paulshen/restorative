@@ -55,10 +55,16 @@ module Example = {
 
     let (state, _dispatch) = useStore();
     let (jsonState, dispatch) = useStoreWithSelector(jsonStringify, ());
+    let (changingSelector, _dispatch) =
+      useStoreWithSelector(
+        state => jsonState ++ " " ++ string_of_int(state.count),
+        (),
+      );
 
     <div>
       <div> {React.string("Count: " ++ string_of_int(state.count))} </div>
       <div> {React.string("JSON: " ++ jsonState)} </div>
+      <div> {React.string("Changing selector: " ++ changingSelector)} </div>
       <div>
         <button onClick={_ => dispatch(Increment)}>
           {React.string("Increment")}

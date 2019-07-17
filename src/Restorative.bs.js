@@ -3,6 +3,7 @@
 
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
+var Caml_option = require("bs-platform/lib/js/caml_option.js");
 
 function createStore(initialState, reducer) {
   var state = /* record */[/* contents */initialState];
@@ -84,22 +85,38 @@ function createStore(initialState, reducer) {
           ];
   };
   var useStoreWithSelector = function (selector, equalityFn, param) {
+    var sliceRef = React.useRef(undefined);
+    var selectorRef = React.useRef(selector);
+    var prevSlice = sliceRef.current;
+    var prevSelector = selectorRef.current;
+    var slice = selector === prevSelector && prevSlice !== undefined ? Caml_option.valFromOption(prevSlice) : Curry._1(selector, state[0]);
+    React.useLayoutEffect((function () {
+            sliceRef.current = Caml_option.some(slice);
+            return undefined;
+          }), /* array */[slice]);
+    React.useLayoutEffect((function () {
+            selectorRef.current = selector;
+            return undefined;
+          }), /* array */[selector]);
     var match = React.useState((function () {
-            return Curry._1(selector, state[0]);
+            return 1;
           }));
-    var setSlice = match[1];
+    var forceUpdate = match[1];
     React.useLayoutEffect((function () {
             var unsubscribe = subscribeWithSelector((function (slice) {
-                    return Curry._1(setSlice, (function (param) {
-                                  return slice;
+                    sliceRef.current = Caml_option.some(slice);
+                    return Curry._1(forceUpdate, (function (x) {
+                                  return x + 1 | 0;
                                 }));
-                  }), selector, equalityFn, /* () */0);
+                  }), (function (state) {
+                    return Curry._1(selectorRef.current, state);
+                  }), equalityFn, /* () */0);
             return (function (param) {
                       return unsubscribe();
                     });
           }), ([]));
     return /* tuple */[
-            match[0],
+            slice,
             dispatch
           ];
   };

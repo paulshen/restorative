@@ -82,12 +82,43 @@ let createStore =
   };
 
   let useStoreWithSelector = (selector, ~equalityFn=?, ()) => {
-    let (slice, setSlice) = React.useState(() => selector(state^));
+    let sliceRef = React.useRef(None);
+    let selectorRef = React.useRef(selector);
+
+    let prevSlice = React.Ref.current(sliceRef);
+    let prevSelector = React.Ref.current(selectorRef);
+    let slice =
+      if (selector === prevSelector) {
+        switch (prevSlice) {
+        | Some(slice) => slice
+        | None => selector(state^)
+        };
+      } else {
+        selector(state^);
+      };
+    React.useLayoutEffect1(
+      () => {
+        React.Ref.setCurrent(sliceRef, Some(slice));
+        None;
+      },
+      [|slice|],
+    );
+    React.useLayoutEffect1(
+      () => {
+        React.Ref.setCurrent(selectorRef, selector);
+        None;
+      },
+      [|selector|],
+    );
+    let (_, forceUpdate) = React.useState(() => 1);
     React.useLayoutEffect0(() => {
       let unsubscribe =
         subscribeWithSelector(
-          slice => setSlice(_ => slice),
-          ~selector,
+          slice => {
+            React.Ref.setCurrent(sliceRef, Some(slice));
+            forceUpdate(x => x + 1);
+          },
+          ~selector=state => React.Ref.current(selectorRef, state),
           ~equalityFn?,
           (),
         );

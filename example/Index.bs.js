@@ -58,7 +58,11 @@ function Index$Example(Props) {
           return JSON.stringify(prim);
         }), undefined, /* () */0);
   var dispatch$1 = match$1[1];
-  return React.createElement("div", undefined, React.createElement("div", undefined, "Count: " + String(match[0][/* count */0])), React.createElement("div", undefined, "JSON: " + match$1[0]), React.createElement("div", undefined, React.createElement("button", {
+  var jsonState = match$1[0];
+  var match$2 = Curry._3(useStoreWithSelector, (function (state) {
+          return jsonState + (" " + String(state[/* count */0]));
+        }), undefined, /* () */0);
+  return React.createElement("div", undefined, React.createElement("div", undefined, "Count: " + String(match[0][/* count */0])), React.createElement("div", undefined, "JSON: " + jsonState), React.createElement("div", undefined, "Changing selector: " + match$2[0]), React.createElement("div", undefined, React.createElement("button", {
                       onClick: (function (param) {
                           return Curry._1(dispatch$1, /* Increment */0);
                         })
