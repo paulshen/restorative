@@ -5,13 +5,13 @@ var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
 var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
 var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
-var Restorative$Restorative = require("../src/Restorative.bs.js");
+var Restorative = require("../src/Restorative.bs.js");
 
 function reducer(state, action) {
   return /* record */[/* count */state[/* count */0] + 1 | 0];
 }
 
-var match = Restorative$Restorative.createStore(/* record */[/* count */1], reducer);
+var match = Restorative.createStore(/* record */[/* count */1], reducer);
 
 var useStoreWithSelector = match[/* useStoreWithSelector */5];
 
