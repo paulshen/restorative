@@ -20,6 +20,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@glennsl/bs-jest": "^0.4.8",
     "react": "^16.8.1",
     "reason-react": ">=0.7.0"
   },

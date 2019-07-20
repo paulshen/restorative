@@ -5,11 +5,14 @@
   },
   "sources": [
     {
-      "dir": "src",
-      "subdirs": true
+      "dir": "src"
     },
     {
       "dir": "example",
+      "type": "dev"
+    },
+    {
+      "dir": "__tests__",
       "type": "dev"
     }
   ],
@@ -21,6 +24,6 @@
   ],
   "suffix": ".bs.js",
   "namespace": false,
-  "bs-dependencies": ["reason-react"],
+  "bs-dependencies": ["reason-react", "@glennsl/bs-jest"],
   "refmt": 3
 }
