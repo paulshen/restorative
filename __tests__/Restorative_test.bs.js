@@ -36,8 +36,32 @@ Jest.describe("Restorative", (function (param) {
                 Curry._1(match[/* dispatch */3], /* Increment */0);
                 return Jest.Expect[/* toBe */2](1, Jest.Expect[/* expect */0](Curry._1(match[/* getState */0], /* () */0)[/* count */0]));
               }));
-        return Jest.describe("subscriptions", (function (param) {
-                      Jest.test("it calls subscriptions", (function (param) {
+        Jest.describe("Subscriptions", (function (param) {
+                Jest.test("it calls subscriptions", (function (param) {
+                        var mock1 = jest.fn((function (prim) {
+                                return /* () */0;
+                              }));
+                        var mock2 = jest.fn((function (prim) {
+                                return /* () */0;
+                              }));
+                        var match = Restorative.createStore(/* record */[
+                              /* count */0,
+                              /* static */"foo"
+                            ], reducer);
+                        var subscribe = match[/* subscribe */1];
+                        Curry._3(subscribe, mock1, undefined, /* () */0);
+                        Curry._3(subscribe, mock2, undefined, /* () */0);
+                        Curry._1(match[/* dispatch */3], /* Increment */0);
+                        var state = Curry._1(match[/* getState */0], /* () */0);
+                        return Jest.Expect[/* toEqual */12](/* tuple */[
+                                    /* array */[state],
+                                    /* array */[state]
+                                  ], Jest.Expect[/* expect */0](/* tuple */[
+                                        Jest.MockJs[/* calls */3](mock1),
+                                        Jest.MockJs[/* calls */3](mock2)
+                                      ]));
+                      }));
+                return Jest.test("subscriptions can unsubscribe", (function (param) {
                               var mock1 = jest.fn((function (prim) {
                                       return /* () */0;
                                     }));
@@ -48,46 +72,52 @@ Jest.describe("Restorative", (function (param) {
                                     /* count */0,
                                     /* static */"foo"
                                   ], reducer);
+                              var dispatch = match[/* dispatch */3];
                               var subscribe = match[/* subscribe */1];
-                              Curry._3(subscribe, mock1, undefined, /* () */0);
-                              Curry._3(subscribe, mock2, undefined, /* () */0);
-                              Curry._1(match[/* dispatch */3], /* Increment */0);
-                              var state = Curry._1(match[/* getState */0], /* () */0);
+                              var unsubscribe1 = Curry._3(subscribe, mock1, undefined, /* () */0);
+                              var unsubscribe2 = Curry._3(subscribe, mock2, undefined, /* () */0);
+                              Curry._1(dispatch, /* Increment */0);
+                              Curry._1(unsubscribe1, /* () */0);
+                              Curry._1(dispatch, /* Increment */0);
+                              Curry._1(unsubscribe2, /* () */0);
+                              Curry._1(dispatch, /* Increment */0);
                               return Jest.Expect[/* toEqual */12](/* tuple */[
-                                          /* array */[state],
-                                          /* array */[state]
+                                          1,
+                                          2
                                         ], Jest.Expect[/* expect */0](/* tuple */[
-                                              Jest.MockJs[/* calls */3](mock1),
-                                              Jest.MockJs[/* calls */3](mock2)
+                                              Jest.MockJs[/* calls */3](mock1).length,
+                                              Jest.MockJs[/* calls */3](mock2).length
                                             ]));
                             }));
-                      return Jest.test("subscriptions can unsubscribe", (function (param) {
-                                    var mock1 = jest.fn((function (prim) {
-                                            return /* () */0;
-                                          }));
-                                    var mock2 = jest.fn((function (prim) {
+              }));
+        return Jest.describe("Selectors", (function (param) {
+                      Jest.test("it selects state slice", (function (param) {
+                              var mock = jest.fn((function (prim) {
+                                      return /* () */0;
+                                    }));
+                              var match = Restorative.createStore(/* record */[
+                                    /* count */0,
+                                    /* static */"foo"
+                                  ], reducer);
+                              Curry._4(match[/* subscribeWithSelector */2], mock, (function (state) {
+                                      return state[/* count */0];
+                                    }), undefined, /* () */0);
+                              Curry._1(match[/* dispatch */3], /* Increment */0);
+                              return Jest.Expect[/* toEqual */12](/* array */[1], Jest.Expect[/* expect */0](Jest.MockJs[/* calls */3](mock)));
+                            }));
+                      return Jest.test("it respects slice equality", (function (param) {
+                                    var mock = jest.fn((function (prim) {
                                             return /* () */0;
                                           }));
                                     var match = Restorative.createStore(/* record */[
                                           /* count */0,
                                           /* static */"foo"
                                         ], reducer);
-                                    var dispatch = match[/* dispatch */3];
-                                    var subscribe = match[/* subscribe */1];
-                                    var unsubscribe1 = Curry._3(subscribe, mock1, undefined, /* () */0);
-                                    var unsubscribe2 = Curry._3(subscribe, mock2, undefined, /* () */0);
-                                    Curry._1(dispatch, /* Increment */0);
-                                    Curry._1(unsubscribe1, /* () */0);
-                                    Curry._1(dispatch, /* Increment */0);
-                                    Curry._1(unsubscribe2, /* () */0);
-                                    Curry._1(dispatch, /* Increment */0);
-                                    return Jest.Expect[/* toEqual */12](/* tuple */[
-                                                1,
-                                                2
-                                              ], Jest.Expect[/* expect */0](/* tuple */[
-                                                    Jest.MockJs[/* calls */3](mock1).length,
-                                                    Jest.MockJs[/* calls */3](mock2).length
-                                                  ]));
+                                    Curry._4(match[/* subscribeWithSelector */2], mock, (function (state) {
+                                            return state[/* static */1];
+                                          }), undefined, /* () */0);
+                                    Curry._1(match[/* dispatch */3], /* Increment */0);
+                                    return Jest.Expect[/* toEqual */12](/* array */[], Jest.Expect[/* expect */0](Jest.MockJs[/* calls */3](mock)));
                                   }));
                     }));
       }));

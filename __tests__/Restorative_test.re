@@ -33,7 +33,7 @@ describe("Restorative", () => {
     expect(getState().count) |> toBe(1);
   });
 
-  describe("subscriptions", () => {
+  describe("Subscriptions", () => {
     test("it calls subscriptions", () => {
       let mock1 = JestJs.fn(ignore);
       let subscription1 = MockJs.fn(mock1);
@@ -70,6 +70,34 @@ describe("Restorative", () => {
         Array.length(MockJs.calls(mock2)),
       ))
       |> toEqual((1, 2));
+    });
+  });
+
+  describe("Selectors", () => {
+    test("it selects state slice", () => {
+      let mock = JestJs.fn(ignore);
+      let subscription = MockJs.fn(mock);
+
+      let {subscribeWithSelector, dispatch} =
+        createStore({count: 0, static: "foo"}, reducer);
+      subscribeWithSelector(subscription, ~selector=state => state.count, ())
+      |> ignore;
+
+      dispatch(Increment);
+      expect(MockJs.calls(mock)) |> toEqual([|1|]);
+    });
+
+    test("it respects slice equality", () => {
+      let mock = JestJs.fn(ignore);
+      let subscription = MockJs.fn(mock);
+
+      let {subscribeWithSelector, dispatch} =
+        createStore({count: 0, static: "foo"}, reducer);
+      subscribeWithSelector(subscription, ~selector=state => state.static, ())
+      |> ignore;
+
+      dispatch(Increment);
+      expect(MockJs.calls(mock)) |> toEqual([||]);
     });
   });
 });
