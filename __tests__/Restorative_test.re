@@ -1,5 +1,9 @@
 open Jest;
 open Restorative;
+open ReactTestingLibrary;
+
+[@bs.val] [@bs.module "react-dom/test-utils"]
+external act: (unit => unit) => unit = "act";
 
 type state = {
   count: int,
@@ -17,6 +21,21 @@ let reducer = (state, action) => {
   | Increment => {...state, count: state.count + 1}
   | Decrement => {...state, count: state.count - 1}
   | ChangeName(name) => {...state, name}
+  };
+};
+
+module TestComponent = {
+  [@react.component]
+  let make = (~useStore, ~render, ~shouldDispatch=false, ()) => {
+    let (state, dispatch) = useStore();
+    React.useEffect0(() => {
+      if (shouldDispatch) {
+        dispatch(Increment);
+      };
+      None;
+    });
+    render(state);
+    React.null;
   };
 };
 
@@ -144,6 +163,65 @@ describe("Restorative", () => {
         MockJs.calls(staticSubscription),
       ))
       |> toEqual(([|1|], [||]));
+    });
+  });
+
+  describe("Hooks", () => {
+    test("useStore", () => {
+      let {useStore, dispatch} = createStore(initialState, reducer);
+
+      let renderMock = JestJs.fn(ignore);
+      let renderFn = MockJs.fn(renderMock);
+      let useStore = () => useStore();
+      render(<TestComponent useStore render=renderFn />) |> ignore;
+
+      let calls1 = MockJs.calls(renderMock);
+      act(() => dispatch(Increment));
+      let calls2 = MockJs.calls(renderMock);
+
+      expect((Array.length(calls1), calls2))
+      |> toEqual((1, [|initialState, {...initialState, count: 1}|]));
+    });
+
+    test("useStore can dispatch", () => {
+      let subscription = JestJs.fn(ignore);
+      let {useStore, getState, subscribe} =
+        createStore(initialState, reducer);
+      subscribe(MockJs.fn(subscription), ()) |> ignore;
+
+      let renderMock = JestJs.fn(ignore);
+      let renderFn = MockJs.fn(renderMock);
+      let useStore = () => useStore();
+      render(<TestComponent useStore render=renderFn shouldDispatch=true />)
+      |> ignore;
+
+      expect((
+        Array.length(MockJs.calls(renderMock)),
+        getState(),
+        Array.length(MockJs.calls(subscription)),
+      ))
+      |> toEqual((2, {...initialState, count: 1}, 1));
+    });
+
+    test("useStoreWithSelector", () => {
+      let {useStoreWithSelector, dispatch} =
+        createStore(initialState, reducer);
+
+      let renderMock = JestJs.fn(ignore);
+      let renderFn = MockJs.fn(renderMock);
+      let useStoreWithSelector = () =>
+        useStoreWithSelector(state => state.count, ());
+      render(<TestComponent useStore=useStoreWithSelector render=renderFn />)
+      |> ignore;
+
+      let calls1 = MockJs.calls(renderMock);
+      act(() => dispatch(Increment));
+      let calls2 = MockJs.calls(renderMock);
+      act(() => dispatch(ChangeName("Bob")));
+      let calls3 = MockJs.calls(renderMock);
+
+      expect((calls1, calls2, calls3))
+      |> toEqual(([|0|], [|0, 1|], [|0, 1|]));
     });
   });
 });

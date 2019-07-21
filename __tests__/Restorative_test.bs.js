@@ -3,7 +3,10 @@
 
 var Jest = require("@glennsl/bs-jest/src/jest.js");
 var Curry = require("bs-platform/lib/js/curry.js");
+var React = require("react");
 var Restorative = require("../src/Restorative.bs.js");
+var ReactTestingLibrary = require("bs-react-testing-library/src/ReactTestingLibrary.bs.js");
+var TestUtils = require("react-dom/test-utils");
 
 var initialState = /* record */[
   /* count */0,
@@ -34,6 +37,25 @@ function reducer(state, action) {
           ];
   }
 }
+
+function Restorative_test$TestComponent(Props) {
+  var useStore = Props.useStore;
+  var render = Props.render;
+  var match = Props.shouldDispatch;
+  var shouldDispatch = match !== undefined ? match : false;
+  var match$1 = Curry._1(useStore, /* () */0);
+  var dispatch = match$1[1];
+  React.useEffect((function () {
+          if (shouldDispatch) {
+            Curry._1(dispatch, /* Increment */0);
+          }
+          return undefined;
+        }), ([]));
+  Curry._1(render, match$1[0]);
+  return null;
+}
+
+var TestComponent = /* module */[/* make */Restorative_test$TestComponent];
 
 Jest.describe("Restorative", (function (param) {
         Jest.test("getState returns initial state", (function (param) {
@@ -137,40 +159,149 @@ Jest.describe("Restorative", (function (param) {
                                             ]));
                             }));
               }));
-        return Jest.describe("Selectors", (function (param) {
-                      Jest.test("it selects state slice", (function (param) {
+        Jest.describe("Selectors", (function (param) {
+                Jest.test("it selects state slice", (function (param) {
+                        var subscription = jest.fn((function (prim) {
+                                return /* () */0;
+                              }));
+                        var match = Restorative.createStore(initialState, reducer);
+                        Curry._4(match[/* subscribeWithSelector */2], subscription, (function (state) {
+                                return state[/* count */0];
+                              }), undefined, /* () */0);
+                        Curry._1(match[/* dispatch */3], /* Increment */0);
+                        return Jest.Expect[/* toEqual */12](/* array */[1], Jest.Expect[/* expect */0](Jest.MockJs[/* calls */3](subscription)));
+                      }));
+                return Jest.test("it respects slice equality", (function (param) {
+                              var countSubscription = jest.fn((function (prim) {
+                                      return /* () */0;
+                                    }));
+                              var staticSubscription = jest.fn((function (prim) {
+                                      return /* () */0;
+                                    }));
+                              var match = Restorative.createStore(initialState, reducer);
+                              var subscribeWithSelector = match[/* subscribeWithSelector */2];
+                              Curry._4(subscribeWithSelector, countSubscription, (function (state) {
+                                      return state[/* count */0];
+                                    }), undefined, /* () */0);
+                              Curry._4(subscribeWithSelector, staticSubscription, (function (state) {
+                                      return state[/* static */1];
+                                    }), undefined, /* () */0);
+                              Curry._1(match[/* dispatch */3], /* Increment */0);
+                              return Jest.Expect[/* toEqual */12](/* tuple */[
+                                          /* array */[1],
+                                          /* array */[]
+                                        ], Jest.Expect[/* expect */0](/* tuple */[
+                                              Jest.MockJs[/* calls */3](countSubscription),
+                                              Jest.MockJs[/* calls */3](staticSubscription)
+                                            ]));
+                            }));
+              }));
+        return Jest.describe("Hooks", (function (param) {
+                      Jest.test("useStore", (function (param) {
+                              var match = Restorative.createStore(initialState, reducer);
+                              var useStore = match[/* useStore */4];
+                              var dispatch = match[/* dispatch */3];
+                              var renderMock = jest.fn((function (prim) {
+                                      return /* () */0;
+                                    }));
+                              var useStore$1 = function (param) {
+                                return Curry._2(useStore, undefined, /* () */0);
+                              };
+                              ReactTestingLibrary.render(undefined, undefined, React.createElement(Restorative_test$TestComponent, {
+                                        useStore: useStore$1,
+                                        render: renderMock
+                                      }));
+                              var calls1 = Jest.MockJs[/* calls */3](renderMock);
+                              TestUtils.act((function (param) {
+                                      return Curry._1(dispatch, /* Increment */0);
+                                    }));
+                              var calls2 = Jest.MockJs[/* calls */3](renderMock);
+                              return Jest.Expect[/* toEqual */12](/* tuple */[
+                                          1,
+                                          /* array */[
+                                            initialState,
+                                            /* record */[
+                                              /* count */1,
+                                              /* static */"foo",
+                                              /* name */"Alice"
+                                            ]
+                                          ]
+                                        ], Jest.Expect[/* expect */0](/* tuple */[
+                                              calls1.length,
+                                              calls2
+                                            ]));
+                            }));
+                      Jest.test("useStore can dispatch", (function (param) {
                               var subscription = jest.fn((function (prim) {
                                       return /* () */0;
                                     }));
                               var match = Restorative.createStore(initialState, reducer);
-                              Curry._4(match[/* subscribeWithSelector */2], subscription, (function (state) {
-                                      return state[/* count */0];
-                                    }), undefined, /* () */0);
-                              Curry._1(match[/* dispatch */3], /* Increment */0);
-                              return Jest.Expect[/* toEqual */12](/* array */[1], Jest.Expect[/* expect */0](Jest.MockJs[/* calls */3](subscription)));
+                              var useStore = match[/* useStore */4];
+                              Curry._3(match[/* subscribe */1], subscription, undefined, /* () */0);
+                              var renderMock = jest.fn((function (prim) {
+                                      return /* () */0;
+                                    }));
+                              var useStore$1 = function (param) {
+                                return Curry._2(useStore, undefined, /* () */0);
+                              };
+                              ReactTestingLibrary.render(undefined, undefined, React.createElement(Restorative_test$TestComponent, {
+                                        useStore: useStore$1,
+                                        render: renderMock,
+                                        shouldDispatch: true
+                                      }));
+                              return Jest.Expect[/* toEqual */12](/* tuple */[
+                                          2,
+                                          /* record */[
+                                            /* count */1,
+                                            /* static */"foo",
+                                            /* name */"Alice"
+                                          ],
+                                          1
+                                        ], Jest.Expect[/* expect */0](/* tuple */[
+                                              Jest.MockJs[/* calls */3](renderMock).length,
+                                              Curry._1(match[/* getState */0], /* () */0),
+                                              Jest.MockJs[/* calls */3](subscription).length
+                                            ]));
                             }));
-                      return Jest.test("it respects slice equality", (function (param) {
-                                    var countSubscription = jest.fn((function (prim) {
-                                            return /* () */0;
-                                          }));
-                                    var staticSubscription = jest.fn((function (prim) {
-                                            return /* () */0;
-                                          }));
+                      return Jest.test("useStoreWithSelector", (function (param) {
                                     var match = Restorative.createStore(initialState, reducer);
-                                    var subscribeWithSelector = match[/* subscribeWithSelector */2];
-                                    Curry._4(subscribeWithSelector, countSubscription, (function (state) {
-                                            return state[/* count */0];
-                                          }), undefined, /* () */0);
-                                    Curry._4(subscribeWithSelector, staticSubscription, (function (state) {
-                                            return state[/* static */1];
-                                          }), undefined, /* () */0);
-                                    Curry._1(match[/* dispatch */3], /* Increment */0);
+                                    var useStoreWithSelector = match[/* useStoreWithSelector */5];
+                                    var dispatch = match[/* dispatch */3];
+                                    var renderMock = jest.fn((function (prim) {
+                                            return /* () */0;
+                                          }));
+                                    var useStoreWithSelector$1 = function (param) {
+                                      return Curry._3(useStoreWithSelector, (function (state) {
+                                                    return state[/* count */0];
+                                                  }), undefined, /* () */0);
+                                    };
+                                    ReactTestingLibrary.render(undefined, undefined, React.createElement(Restorative_test$TestComponent, {
+                                              useStore: useStoreWithSelector$1,
+                                              render: renderMock
+                                            }));
+                                    var calls1 = Jest.MockJs[/* calls */3](renderMock);
+                                    TestUtils.act((function (param) {
+                                            return Curry._1(dispatch, /* Increment */0);
+                                          }));
+                                    var calls2 = Jest.MockJs[/* calls */3](renderMock);
+                                    TestUtils.act((function (param) {
+                                            return Curry._1(dispatch, /* ChangeName */["Bob"]);
+                                          }));
+                                    var calls3 = Jest.MockJs[/* calls */3](renderMock);
                                     return Jest.Expect[/* toEqual */12](/* tuple */[
-                                                /* array */[1],
-                                                /* array */[]
+                                                /* array */[0],
+                                                /* array */[
+                                                  0,
+                                                  1
+                                                ],
+                                                /* array */[
+                                                  0,
+                                                  1
+                                                ]
                                               ], Jest.Expect[/* expect */0](/* tuple */[
-                                                    Jest.MockJs[/* calls */3](countSubscription),
-                                                    Jest.MockJs[/* calls */3](staticSubscription)
+                                                    calls1,
+                                                    calls2,
+                                                    calls3
                                                   ]));
                                   }));
                     }));
@@ -178,4 +309,5 @@ Jest.describe("Restorative", (function (param) {
 
 exports.initialState = initialState;
 exports.reducer = reducer;
+exports.TestComponent = TestComponent;
 /*  Not a pure module */

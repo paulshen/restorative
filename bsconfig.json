@@ -24,6 +24,10 @@
   ],
   "suffix": ".bs.js",
   "namespace": false,
-  "bs-dependencies": ["reason-react", "@glennsl/bs-jest"],
+  "bs-dependencies": [
+    "reason-react",
+    "@glennsl/bs-jest",
+    "bs-react-testing-library"
+  ],
   "refmt": 3
 }
