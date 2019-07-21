@@ -34,7 +34,7 @@ function createStore(initialState, reducer) {
       }
     };
     listeners[0] = listeners[0].concat(/* array */[listenerFn]);
-    return (function () {
+    return (function (param) {
         listeners[0] = listeners[0].filter((function (l) {
                 return l !== listenerFn;
               }));
@@ -57,7 +57,7 @@ function createStore(initialState, reducer) {
       }
     };
     listeners[0] = listeners[0].concat(/* array */[listenerFn]);
-    return (function () {
+    return (function (param) {
         listeners[0] = listeners[0].filter((function (l) {
                 return l !== listenerFn;
               }));
@@ -76,7 +76,7 @@ function createStore(initialState, reducer) {
                                 }));
                   }), equalityFn, /* () */0);
             return (function (param) {
-                      return unsubscribe();
+                      return Curry._1(unsubscribe, /* () */0);
                     });
           }), ([]));
     return /* tuple */[
@@ -112,7 +112,7 @@ function createStore(initialState, reducer) {
                     return Curry._1(selectorRef.current, state);
                   }), equalityFn, /* () */0);
             return (function (param) {
-                      return unsubscribe();
+                      return Curry._1(unsubscribe, /* () */0);
                     });
           }), ([]));
     return /* tuple */[

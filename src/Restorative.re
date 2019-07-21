@@ -3,17 +3,18 @@ type reducer('state, 'action) = ('state, 'action) => 'state;
 type api('state, 'action) = {
   getState: unit => 'state,
   subscribe:
-    ('state => unit, ~equalityFn: ('state, 'state) => bool=?, unit) =>
-    (. unit) => unit,
+    ('state => unit, ~equalityFn: ('state, 'state) => bool=?, unit, unit) =>
+    unit,
   subscribeWithSelector:
     'slice.
     (
       'slice => unit,
       ~selector: 'state => 'slice,
       ~equalityFn: ('slice, 'slice) => bool=?,
+      unit,
       unit
     ) =>
-    (. unit) => unit,
+    unit,
 
   dispatch: 'action => unit,
   useStore:
@@ -51,7 +52,7 @@ let createStore =
       };
     };
     listeners := listeners^ |> Js.Array.concat([|listenerFn|]);
-    (.) => {
+    () => {
       listeners := listeners^ |> Js.Array.filter(l => l !== listenerFn);
     };
   };
@@ -66,7 +67,7 @@ let createStore =
       };
     };
     listeners := listeners^ |> Js.Array.concat([|listenerFn|]);
-    (.) => {
+    () => {
       listeners := listeners^ |> Js.Array.filter(l => l !== listenerFn);
     };
   };
@@ -76,7 +77,7 @@ let createStore =
     React.useLayoutEffect0(() => {
       let unsubscribe =
         subscribe(_ => forceUpdate(x => x + 1), ~equalityFn?, ());
-      Some(() => unsubscribe(.));
+      Some(() => unsubscribe());
     });
     (state^, dispatch);
   };
@@ -122,7 +123,7 @@ let createStore =
           ~equalityFn?,
           (),
         );
-      Some(() => unsubscribe(.));
+      Some(() => unsubscribe());
     });
     (slice, dispatch);
   };
