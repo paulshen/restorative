@@ -1,5 +1,7 @@
 # Restorative
 
+[![CircleCI](https://circleci.com/gh/paulshen/restorative/tree/master.svg?style=svg)](https://circleci.com/gh/paulshen/restorative/tree/master)
+
 Simple ReasonML state management. Comes with React hooks.
 
 Although you can get very far with core ReasonML and React functionality, you may find yourself wanting to manage global state with subscriptions. `Restorative` may be your solution. Features a reducer store with performant subscriptions and selectors.
