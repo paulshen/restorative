@@ -3,14 +3,13 @@ type reducer('state, 'action) = ('state, 'action) => 'state;
 type api('state, 'action) = {
   getState: unit => 'state,
   subscribe:
-    ('state => unit, ~equalityFn: ('state, 'state) => bool=?, unit, unit) =>
-    unit,
+    ('state => unit, ~areEqual: ('state, 'state) => bool=?, unit, unit) => unit,
   subscribeWithSelector:
     'slice.
     (
       'state => 'slice,
       'slice => unit,
-      ~equalityFn: ('slice, 'slice) => bool=?,
+      ~areEqual: ('slice, 'slice) => bool=?,
       unit,
       unit
     ) =>
@@ -18,11 +17,10 @@ type api('state, 'action) = {
 
   dispatch: 'action => unit,
   useStore:
-    (~equalityFn: ('state, 'state) => bool=?, unit) =>
-    ('state, 'action => unit),
+    (~areEqual: ('state, 'state) => bool=?, unit) => ('state, 'action => unit),
   useStoreWithSelector:
     'slice.
-    ('state => 'slice, ~equalityFn: ('slice, 'slice) => bool=?, unit) =>
+    ('state => 'slice, ~areEqual: ('slice, 'slice) => bool=?, unit) =>
     ('slice, 'action => unit),
 
 };
@@ -42,11 +40,11 @@ let createStore =
     listeners^ |> Js.Array.forEach(listener => listener());
   };
 
-  let subscribe = (listener, ~equalityFn=objIs, ()) => {
+  let subscribe = (listener, ~areEqual=objIs, ()) => {
     let currentState = ref(state^);
     let listenerFn = () => {
       let state = state^;
-      if (!equalityFn(state, currentState^)) {
+      if (!areEqual(state, currentState^)) {
         listener(state);
         currentState := state;
       };
@@ -57,11 +55,11 @@ let createStore =
     };
   };
 
-  let subscribeWithSelector = (selector, listener, ~equalityFn=objIs, ()) => {
+  let subscribeWithSelector = (selector, listener, ~areEqual=objIs, ()) => {
     let currentSlice = ref(selector(state^));
     let listenerFn = () => {
       let slice = selector(state^);
-      if (!equalityFn(slice, currentSlice^)) {
+      if (!areEqual(slice, currentSlice^)) {
         listener(slice);
         currentSlice := slice;
       };
@@ -72,17 +70,17 @@ let createStore =
     };
   };
 
-  let useStore = (~equalityFn=?, ()) => {
+  let useStore = (~areEqual=?, ()) => {
     let (_, forceUpdate) = React.useState(() => 1);
     React.useLayoutEffect0(() => {
       let unsubscribe =
-        subscribe(_ => forceUpdate(x => x + 1), ~equalityFn?, ());
+        subscribe(_ => forceUpdate(x => x + 1), ~areEqual?, ());
       Some(() => unsubscribe());
     });
     (state^, dispatch);
   };
 
-  let useStoreWithSelector = (selector, ~equalityFn=?, ()) => {
+  let useStoreWithSelector = (selector, ~areEqual=?, ()) => {
     let sliceRef = React.useRef(None);
     let selectorRef = React.useRef(selector);
 
@@ -120,7 +118,7 @@ let createStore =
             React.Ref.setCurrent(sliceRef, Some(slice));
             forceUpdate(x => x + 1);
           },
-          ~equalityFn?,
+          ~areEqual?,
           (),
         );
       Some(() => unsubscribe());

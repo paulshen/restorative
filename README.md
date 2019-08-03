@@ -102,12 +102,12 @@ let make = () => {
 
 ## Equality
 
-Restorative will not call listeners if the selected state has not "changed" (entire state if no selector). By default, Restorative uses `Object.is` for equality checking. All `subscribe` and `useStore` functions take an optional `~equalityFn: ('state, 'state) => bool`.
+Restorative will not call listeners if the selected state has not "changed" (entire state if no selector). By default, Restorative uses `Object.is` for equality checking. All `subscribe` and `useStore` functions take an optional `~areEqual: ('state, 'state) => bool`.
 
 ```re
 useStoreWithSelector(
   state => [|state.a, state.b|],
-  ~equalityFn=(a, b) => a == b,
+  ~areEqual=(a, b) => a == b,
   ()
 );
 ```

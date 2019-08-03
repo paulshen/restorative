@@ -40,7 +40,7 @@ module Example = {
       subscribeWithSelector(
         state => {countDividedBy5: state.count / 5},
         derivedState => Js.log2("Derived", derivedState),
-        ~equalityFn=(a, b) => a == b,
+        ~areEqual=(a, b) => a == b,
         (),
       )
       |> ignore;

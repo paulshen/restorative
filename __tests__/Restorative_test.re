@@ -87,20 +87,20 @@ describe("Restorative", () => {
       |> toEqual((1, 2));
     });
 
-    test("it respects custom equalityFn", () => {
+    test("it respects custom areEqual", () => {
       let subscription1 = JestJs.fn(ignore);
       let subscription2 = JestJs.fn(ignore);
 
       let {subscribe, dispatch} = createStore(initialState, reducer);
       subscribe(
         MockJs.fn(subscription1),
-        ~equalityFn=(a, b) => a.count == b.count,
+        ~areEqual=(a, b) => a.count == b.count,
         (),
       )
       |> ignore;
       subscribe(
         MockJs.fn(subscription2),
-        ~equalityFn=(a, b) => a.name == b.name,
+        ~areEqual=(a, b) => a.name == b.name,
         (),
       )
       |> ignore;
