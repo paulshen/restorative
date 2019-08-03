@@ -2,7 +2,7 @@
   <img width="160" src="restorative.png" />
 </p>
 
-**Restorative** is a simple ReasonML state management. Comes with React hooks.
+**Restorative** is a simple ReasonML state management library. Comes with React hooks.
 
 While you can get very far with core ReasonML and React functionality, you may find yourself with global state to manage. `Restorative` may be your solution. Features a reducer store with performant subscriptions and selectors.
 
@@ -114,11 +114,11 @@ useStoreWithSelector(
 
 ### Comparison with JavaScript libraries
 
-We get all the benefits of Reason's great type system. Instead of plain JavaScript objects, we use variants to model actions. All operations have sound types and allow work (e.g. action creators) to happen at compile time.
+We get all the benefits of Reason's great type system. Instead of plain JavaScript objects, we use variants to model actions. All operations have sound types and some work is moved to compile time (e.g. action creators).
 
 ### Comparison with React Context
 
-Restorative maintains lists of subscriptions for each store. When a React context value changes, it iterates through all children Fiber nodes to find context consumers. React context is not well suited for fast-changing data. Subscriptions, on the other hand, allow for more precise operations at the cost of more complexity (maintaining list of subscribers).
+Restorative maintains a list of subscriptions for each store. In contrast, React Context iterates through all children Fiber nodes to find context consumers when the context value changes. React context is not well suited for fast-changing data. Subscriptions, on the other hand, allow for more precise operations at the cost of more complexity (maintaining list of subscribers).
 
 ### Comparison with Redux
 
