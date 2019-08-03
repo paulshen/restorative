@@ -10,6 +10,21 @@ Similar projects include [Redux](https://redux.js.org/), [Reductive](https://git
 
 [![CircleCI](https://circleci.com/gh/paulshen/restorative/tree/master.svg?style=svg)](https://circleci.com/gh/paulshen/restorative/tree/master)
 
+## Installation
+
+```
+npm install --save restorative
+```
+
+Add to `bsconfig.json`
+
+```
+"bs-dependencies": [
+  "restorative"
+]
+```
+
+## Create store
 
 ```re
 type state = int;
@@ -26,7 +41,7 @@ let api =
   );
 ```
 
-## Basic Usage
+## Basic subscription
 
 ```re
 let {dispatch, subscribe, getState} = api;
