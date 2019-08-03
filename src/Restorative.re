@@ -8,8 +8,8 @@ type api('state, 'action) = {
   subscribeWithSelector:
     'slice.
     (
+      'state => 'slice,
       'slice => unit,
-      ~selector: 'state => 'slice,
       ~equalityFn: ('slice, 'slice) => bool=?,
       unit,
       unit
@@ -57,7 +57,7 @@ let createStore =
     };
   };
 
-  let subscribeWithSelector = (listener, ~selector, ~equalityFn=objIs, ()) => {
+  let subscribeWithSelector = (selector, listener, ~equalityFn=objIs, ()) => {
     let currentSlice = ref(selector(state^));
     let listenerFn = () => {
       let slice = selector(state^);
@@ -115,11 +115,11 @@ let createStore =
     React.useLayoutEffect0(() => {
       let unsubscribe =
         subscribeWithSelector(
+          state => React.Ref.current(selectorRef, state),
           slice => {
             React.Ref.setCurrent(sliceRef, Some(slice));
             forceUpdate(x => x + 1);
           },
-          ~selector=state => React.Ref.current(selectorRef, state),
           ~equalityFn?,
           (),
         );

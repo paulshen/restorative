@@ -84,7 +84,7 @@ let {subscribeWithSelector, dispatch} =
     }
   );
 
-subscribeWithSelector(a => Js.log(a), ~selector=state => state.a, ());
+subscribeWithSelector(state => state.a, a => Js.log(a), ());
 dispatch(IncrementA); // calls listener
 dispatch(IncrementB); // does not call listener
 ```

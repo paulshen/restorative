@@ -29,21 +29,17 @@ module Example = {
     React.useEffect0(() => {
       Js.log(getState());
       subscribe(state => Js.log(state), ()) |> ignore;
+      subscribeWithSelector(state => state.count, count => Js.log(count), ())
+      |> ignore;
       subscribeWithSelector(
+        state => string_of_int(state.count + 1),
         count => Js.log(count),
-        ~selector=state => state.count,
         (),
       )
       |> ignore;
       subscribeWithSelector(
-        count => Js.log(count),
-        ~selector=state => string_of_int(state.count + 1),
-        (),
-      )
-      |> ignore;
-      subscribeWithSelector(
+        state => {countDividedBy5: state.count / 5},
         derivedState => Js.log2("Derived", derivedState),
-        ~selector=state => {countDividedBy5: state.count / 5},
         ~equalityFn=(a, b) => a == b,
         (),
       )

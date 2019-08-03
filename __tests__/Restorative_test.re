@@ -128,8 +128,8 @@ describe("Restorative", () => {
       let {subscribeWithSelector, dispatch} =
         createStore(initialState, reducer);
       subscribeWithSelector(
+        state => state.count,
         MockJs.fn(subscription),
-        ~selector=state => state.count,
         (),
       )
       |> ignore;
@@ -145,14 +145,14 @@ describe("Restorative", () => {
       let {subscribeWithSelector, dispatch} =
         createStore(initialState, reducer);
       subscribeWithSelector(
+        state => state.count,
         MockJs.fn(countSubscription),
-        ~selector=state => state.count,
         (),
       )
       |> ignore;
       subscribeWithSelector(
+        state => state.static,
         MockJs.fn(staticSubscription),
-        ~selector=state => state.static,
         (),
       )
       |> ignore;
