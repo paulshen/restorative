@@ -25,7 +25,9 @@
   "suffix": ".bs.js",
   "namespace": false,
   "bs-dependencies": [
-    "reason-react",
+    "reason-react"
+  ],
+  "bs-dev-dependencies": [
     "@glennsl/bs-jest",
     "bs-react-testing-library"
   ],
