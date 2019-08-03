@@ -6,7 +6,7 @@
 
 While you can get very far with core ReasonML and React functionality, you may find yourself with global state to manage. `Restorative` may be your solution. Features a reducer store with performant subscriptions and selectors.
 
-Similar projects include [Redux](https://redux.js.org/), [Reductive](https://github.com/reasonml-community/reductive), and [zustand](https://github.com/react-spring/zustand).
+Similar projects in JavaScript include [Redux](https://redux.js.org/) and [zustand](https://github.com/react-spring/zustand).
 
 [![CircleCI](https://circleci.com/gh/paulshen/restorative/tree/master.svg?style=svg)](https://circleci.com/gh/paulshen/restorative/tree/master)
 
