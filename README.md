@@ -26,7 +26,7 @@ Add to `bsconfig.json`
 
 ## Create store
 
-```re
+```ocaml
 type state = int;
 type action =
   | Increment
@@ -43,7 +43,7 @@ let api =
 
 ## Basic subscription
 
-```re
+```ocaml
 let {dispatch, subscribe, getState} = api;
 let unsubscribe = subscribe(state => Js.log(state));
 dispatch(Increment); // calls subscriptions
@@ -53,7 +53,7 @@ unsubscribe();
 
 ## React hook
 
-```re
+```ocaml
 let {useStore} = api;
 
 [@react.component]
@@ -67,7 +67,7 @@ let make = () => {
 
 ## Selector
 
-```re
+```ocaml
 type state = {
   a: int,
   b: int,
@@ -91,7 +91,7 @@ dispatch(IncrementB); // does not call listener
 
 ### useStoreWithSelector
 
-```re
+```ocaml
 [@react.component]
 let make = () => {
   let (a, dispatch) = useStoreWithSelector(state => state.a, ());
@@ -102,9 +102,9 @@ let make = () => {
 
 ## Equality
 
-Restorative will not call listeners if the selected state has not "changed" (entire state if no selector). By default, Restorative uses `Object.is` for equality checking. All `subscribe` and `useStore` functions take an optional `~areEqual: ('state, 'state) => bool`.
+`Restorative` will not call listeners if the selected state has not "changed" (entire state if no selector). By default, uses `Object.is` for equality checking. All `subscribe` and `useStore` functions take an optional `~areEqual: ('state, 'state) => bool`.
 
-```re
+```ocaml
 useStoreWithSelector(
   state => [|state.a, state.b|],
   ~areEqual=(a, b) => a == b,
@@ -118,8 +118,8 @@ We get all the benefits of Reason's great type system. Instead of plain JavaScri
 
 ### Comparison with React Context
 
-Restorative maintains a list of subscriptions for each store. In contrast, React Context iterates through all children Fiber nodes to find context consumers when the context value changes. React context is not well suited for fast-changing data. Subscriptions, on the other hand, allow for more precise operations at the cost of more complexity (maintaining list of subscribers).
+`Restorative` maintains a list of subscriptions for each store. In contrast, React Context iterates through all children Fiber nodes to find context consumers when the context value changes. React context is not well suited for fast-changing data. Subscriptions, on the other hand, allow for more precise operations at the cost of more complexity (maintaining list of subscribers).
 
 ### Comparison with Redux
 
-Redux applications typically use a single global store and dispatcher. With Restorative, you can create multiple stores, each with its own dispatcher. This allows better separation of state logic.
+Redux applications typically use a single global store and dispatcher. With `Restorative`, you can create multiple stores, each with its own dispatcher. This allows better separation of state logic.
