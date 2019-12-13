@@ -26,7 +26,7 @@ Add to `bsconfig.json`
 
 ## Create store
 
-```ocaml
+```reason
 type state = int;
 type action =
   | Increment
@@ -43,7 +43,7 @@ let api =
 
 ## Basic subscription
 
-```ocaml
+```reason
 let {dispatch, subscribe, getState} = api;
 let unsubscribe = subscribe(state => Js.log(state));
 dispatch(Increment); // calls subscriptions
@@ -53,7 +53,7 @@ unsubscribe();
 
 ## React hook
 
-```ocaml
+```reason
 let {useStore} = api;
 
 [@react.component]
@@ -67,7 +67,7 @@ let make = () => {
 
 ## Selector
 
-```ocaml
+```reason
 type state = {
   a: int,
   b: int,
@@ -91,7 +91,7 @@ dispatch(IncrementB); // does not call listener
 
 ### useStoreWithSelector
 
-```ocaml
+```reason
 [@react.component]
 let make = () => {
   let (a, dispatch) = useStoreWithSelector(state => state.a, ());
@@ -104,7 +104,7 @@ let make = () => {
 
 `Restorative` will not call listeners if the selected state has not "changed" (entire state if no selector). By default, uses `Object.is` for equality checking. All `subscribe` and `useStore` functions take an optional `~areEqual: ('state, 'state) => bool`.
 
-```ocaml
+```reason
 useStoreWithSelector(
   state => [|state.a, state.b|],
   ~areEqual=(a, b) => a == b,
