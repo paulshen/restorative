@@ -16,12 +16,10 @@ type api('state, 'action) = {
     unit,
 
   dispatch: 'action => unit,
-  useStore:
-    (~areEqual: ('state, 'state) => bool=?, unit) => ('state, 'action => unit),
+  useStore: (~areEqual: ('state, 'state) => bool=?, unit) => 'state,
   useStoreWithSelector:
     'slice.
-    ('state => 'slice, ~areEqual: ('slice, 'slice) => bool=?, unit) =>
-    ('slice, 'action => unit),
+    ('state => 'slice, ~areEqual: ('slice, 'slice) => bool=?, unit) => 'slice,
 
 };
 
@@ -77,7 +75,7 @@ let createStore =
         subscribe(_ => forceUpdate(x => x + 1), ~areEqual?, ());
       Some(() => unsubscribe());
     });
-    (state^, dispatch);
+    state^;
   };
 
   let useStoreWithSelector = (selector, ~areEqual=?, ()) => {
@@ -123,7 +121,7 @@ let createStore =
         );
       Some(() => unsubscribe());
     });
-    (slice, dispatch);
+    slice;
   };
 
   {

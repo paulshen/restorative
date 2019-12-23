@@ -26,8 +26,8 @@ let reducer = (state, action) => {
 
 module TestComponent = {
   [@react.component]
-  let make = (~useStore, ~render, ~shouldDispatch=false, ()) => {
-    let (state, dispatch) = useStore();
+  let make = (~useStore, ~dispatch, ~render, ~shouldDispatch=false, ()) => {
+    let state = useStore();
     React.useEffect0(() => {
       if (shouldDispatch) {
         dispatch(Increment);
@@ -173,7 +173,7 @@ describe("Restorative", () => {
       let renderMock = JestJs.fn(ignore);
       let renderFn = MockJs.fn(renderMock);
       let useStore = () => useStore();
-      render(<TestComponent useStore render=renderFn />) |> ignore;
+      render(<TestComponent useStore dispatch render=renderFn />) |> ignore;
 
       let calls1 = MockJs.calls(renderMock);
       act(() => dispatch(Increment));
@@ -181,26 +181,6 @@ describe("Restorative", () => {
 
       expect((Array.length(calls1), calls2))
       |> toEqual((1, [|initialState, {...initialState, count: 1}|]));
-    });
-
-    test("useStore can dispatch", () => {
-      let subscription = JestJs.fn(ignore);
-      let {useStore, getState, subscribe} =
-        createStore(initialState, reducer);
-      subscribe(MockJs.fn(subscription), ()) |> ignore;
-
-      let renderMock = JestJs.fn(ignore);
-      let renderFn = MockJs.fn(renderMock);
-      let useStore = () => useStore();
-      render(<TestComponent useStore render=renderFn shouldDispatch=true />)
-      |> ignore;
-
-      expect((
-        Array.length(MockJs.calls(renderMock)),
-        getState(),
-        Array.length(MockJs.calls(subscription)),
-      ))
-      |> toEqual((2, {...initialState, count: 1}, 1));
     });
 
     test("useStoreWithSelector", () => {
@@ -211,7 +191,13 @@ describe("Restorative", () => {
       let renderFn = MockJs.fn(renderMock);
       let useStoreWithSelector = () =>
         useStoreWithSelector(state => state.count, ());
-      render(<TestComponent useStore=useStoreWithSelector render=renderFn />)
+      render(
+        <TestComponent
+          useStore=useStoreWithSelector
+          dispatch
+          render=renderFn
+        />,
+      )
       |> ignore;
 
       let calls1 = MockJs.calls(renderMock);

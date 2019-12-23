@@ -49,9 +49,9 @@ module Example = {
       None;
     });
 
-    let (state, _dispatch) = useStore();
-    let (jsonState, dispatch) = useStoreWithSelector(jsonStringify, ());
-    let (changingSelector, _dispatch) =
+    let state = useStore();
+    let jsonState = useStoreWithSelector(jsonStringify, ());
+    let changingSelector =
       useStoreWithSelector(
         state => jsonState ++ " " ++ string_of_int(state.count),
         (),
