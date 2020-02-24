@@ -73,6 +73,8 @@ let createStore =
     React.useLayoutEffect0(() => {
       let unsubscribe =
         subscribe(_ => forceUpdate(x => x + 1), ~areEqual?, ());
+      // The state may have changed between render and this effect.
+      forceUpdate(x => x + 1);
       Some(() => unsubscribe());
     });
     state^;
@@ -119,6 +121,9 @@ let createStore =
           ~areEqual?,
           (),
         );
+      // The state may have changed between render and this effect.
+      React.Ref.setCurrent(sliceRef, Some(selector(state^)));
+      forceUpdate(x => x + 1);
       Some(() => unsubscribe());
     });
     slice;

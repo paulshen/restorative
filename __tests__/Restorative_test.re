@@ -179,8 +179,11 @@ describe("Restorative", () => {
       act(() => dispatch(Increment));
       let calls2 = MockJs.calls(renderMock);
 
-      expect((Array.length(calls1), calls2))
-      |> toEqual((1, [|initialState, {...initialState, count: 1}|]));
+      expect((
+        calls1[Array.length(calls1) - 1],
+        calls2[Array.length(calls2) - 1],
+      ))
+      |> toEqual((initialState, {...initialState, count: 1}));
     });
 
     test("useStoreWithSelector", () => {
@@ -207,7 +210,7 @@ describe("Restorative", () => {
       let calls3 = MockJs.calls(renderMock);
 
       expect((calls1, calls2, calls3))
-      |> toEqual(([|0|], [|0, 1|], [|0, 1|]));
+      |> toEqual(([|0, 0|], [|0, 0, 1|], [|0, 0, 1|]));
     });
   });
 });
