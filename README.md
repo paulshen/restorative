@@ -54,11 +54,11 @@ unsubscribe();
 ## React hook
 
 ```reason
-let {useStore} = api;
+let {useStore, dispatch} = api;
 
 [@react.component]
 let make = () => {
-  let (state, dispatch) = useStore();
+  let state = useStore();
   <button onClick={_ => dispatch(Increment)}>
     {React.string(string_of_int(state))}
   </button>;
@@ -94,7 +94,7 @@ dispatch(IncrementB); // does not call listener
 ```reason
 [@react.component]
 let make = () => {
-  let (a, dispatch) = useStoreWithSelector(state => state.a, ());
+  let a = useStoreWithSelector(state => state.a, ());
   // Only updates when a changes
   ...
 };
