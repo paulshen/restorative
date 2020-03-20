@@ -1,6 +1,6 @@
 {
   "name": "restorative",
-  "version": "0.3.2",
+  "version": "0.4.0-beta.0",
   "scripts": {
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
