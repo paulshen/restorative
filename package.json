@@ -6,7 +6,8 @@
     "start": "bsb -make-world -w",
     "clean": "bsb -clean-world",
     "test": "yarn build && yarn jest",
-    "example": "yarn build && yarn parcel example/index.html"
+    "example": "yarn build && yarn parcel example/index.html",
+    "prepare": "yarn build"
   },
   "files": [
     "src",
