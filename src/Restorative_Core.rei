@@ -2,6 +2,7 @@ type reducer('state, 'action) = ('state, 'action) => 'state;
 
 type api('state, 'action) = {
   getState: unit => 'state,
+  replaceState: 'state => unit,
   subscribe:
     ('state => unit, ~areEqual: ('state, 'state) => bool=?, unit, unit) => unit,
   subscribeWithSelector:

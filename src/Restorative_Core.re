@@ -2,6 +2,7 @@ type reducer('state, 'action) = ('state, 'action) => 'state;
 
 type api('state, 'action) = {
   getState: unit => 'state,
+  replaceState: 'state => unit,
   subscribe:
     ('state => unit, ~areEqual: ('state, 'state) => bool=?, unit, unit) => unit,
   subscribeWithSelector:
@@ -32,6 +33,10 @@ let createStore =
   let listeners = ref([||]);
 
   let getState = () => state^;
+  let replaceState = newState => {
+    state := newState;
+    listeners^ |> Js.Array.forEach(listener => listener());
+  };
 
   let dispatch = action => {
     state := reducer(state^, action);
@@ -131,6 +136,7 @@ let createStore =
 
   {
     getState,
+    replaceState,
     subscribe,
     subscribeWithSelector,
     dispatch,
