@@ -2,9 +2,9 @@
   <img width="160" src="restorative.png" />
 </p>
 
-**Restorative** is a simple ReasonML state management library. Comes with React hooks.
+**Restorative** is a simple ReScript state management library. Comes with React hooks.
 
-While you can get very far with core ReasonML and React functionality, you may find yourself with global state to manage. `Restorative` may be your solution. Features a reducer store with performant subscriptions and selectors.
+While you can get very far with core ReScript and React functionality, you may find yourself with global state to manage. `Restorative` may be your solution. Features a reducer store with performant subscriptions and selectors.
 
 Similar projects in JavaScript include [Redux](https://redux.js.org/) and [zustand](https://github.com/react-spring/zustand).
 

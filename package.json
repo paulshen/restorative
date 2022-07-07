@@ -2,9 +2,9 @@
   "name": "restorative",
   "version": "0.3.2",
   "scripts": {
-    "build": "bsb -make-world",
-    "start": "bsb -make-world -w",
-    "clean": "bsb -clean-world",
+    "build": "rescript build -with-deps",
+    "start": "rescript build -with-deps -w",
+    "clean": "rescript clean",
     "test": "yarn build && yarn jest",
     "example": "yarn build && yarn parcel example/index.html"
   },
@@ -20,17 +20,19 @@
   "author": "Paul Shen",
   "license": "MIT",
   "peerDependencies": {
+    "@rescript/react": "^0.10.3",
     "react": ">=16.8",
-    "reason-react": ">=0.7"
+    "rescript": "^9.1.4"
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.8",
-    "bs-platform": "^5.0.4",
-    "bs-react-testing-library": "^0.6.0",
+    "@rescript/react": "^0.10.3",
+    "@testing-library/react": "^11.1.0",
+    "bs-dom-testing-library": "^0.7.0",
     "html-webpack-plugin": "^3.2.0",
     "parcel-bundler": "^1.12.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.1",
-    "reason-react": "^0.7.0"
+    "rescript": "^9.1.4"
   }
 }
