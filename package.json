@@ -20,19 +20,19 @@
   "author": "Paul Shen",
   "license": "MIT",
   "peerDependencies": {
-    "@rescript/react": "^0.10.3",
+    "@rescript/react": "0.11.0",
     "react": ">=16.8",
-    "rescript": "^9.1.4"
+    "rescript": "10.1.2"
   },
   "devDependencies": {
     "@glennsl/bs-jest": "^0.4.8",
-    "@rescript/react": "^0.10.3",
+    "@rescript/react": "0.11.0",
     "@testing-library/react": "^11.1.0",
     "bs-dom-testing-library": "^0.7.0",
     "html-webpack-plugin": "^3.2.0",
     "parcel-bundler": "^1.12.4",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.1",
-    "rescript": "^9.1.4"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "rescript": "10.1.2"
   }
 }

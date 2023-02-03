@@ -1,7 +1,7 @@
 {
   "name": "restorative",
-  "reason": {
-    "react-jsx": 3
+  "jsx": {
+    "version": 4
   },
   "sources": [
     {
@@ -9,14 +9,6 @@
     },
     {
       "dir": "example",
-      "type": "dev"
-    },
-    {
-      "dir": "__tests__",
-      "type": "dev"
-    },
-    {
-      "dir": "vendors",
       "type": "dev"
     }
   ],
@@ -28,6 +20,5 @@
   ],
   "suffix": ".bs.js",
   "namespace": false,
-  "bs-dependencies": ["@rescript/react"],
-  "bs-dev-dependencies": ["@glennsl/bs-jest", "bs-dom-testing-library"]
+  "bs-dependencies": ["@rescript/react"]
 }

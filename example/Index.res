@@ -28,7 +28,7 @@ module Example = {
       subscribe(state => Js.log(state), ()) |> ignore
       subscribeWithSelector(state => state.count, count => Js.log(count), ()) |> ignore
       subscribeWithSelector(
-        state => string_of_int(state.count + 1),
+        state => Belt.Int.toString(state.count + 1),
         count => Js.log(count),
         (),
       ) |> ignore
@@ -46,12 +46,12 @@ module Example = {
     let state = useStore()
     let jsonState = useStoreWithSelector(jsonStringify, ())
     let changingSelector = useStoreWithSelector(
-      state => jsonState ++ (" " ++ string_of_int(state.count)),
+      state => jsonState ++ (" " ++ Belt.Int.toString(state.count)),
       (),
     )
 
     <div>
-      <div> {React.string("Count: " ++ string_of_int(state.count))} </div>
+      <div> {React.string("Count: " ++ Belt.Int.toString(state.count))} </div>
       <div> {React.string("JSON: " ++ jsonState)} </div>
       <div> {React.string("Changing selector: " ++ changingSelector)} </div>
       <div> <button onClick={_ => dispatch(Increment)}> {React.string("Increment")} </button> </div>
@@ -59,4 +59,8 @@ module Example = {
   }
 }
 
-ReactDOM.render(<Example />, ReactDOM.querySelector("#root")->Belt.Option.getUnsafe)
+let root = ReactDOM.Client.createRoot(ReactDOM.querySelector("#root")->Belt.Option.getUnsafe)
+
+
+
+root->ReactDOM.Client.Root.render(<Example />)
